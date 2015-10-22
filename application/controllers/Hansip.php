@@ -33,6 +33,7 @@ class Hansip extends REST_Controller
 		}
 
 		$data = $this->Penduduk->get_access_0($this->get('nik'));
+		$data['foto'] = base64_encode($data['foto']);
 		
 		if($data){
 			$this->response($data, 200);
