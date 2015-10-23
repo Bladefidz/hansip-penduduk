@@ -24,8 +24,17 @@ class Penduduk extends CI_Model
 	 */
 	public function get_access_0($nik)
 	{
-		$this->db->select("nama, tempat_lahir, tanggal_lahir, foto");
-		$query = $this->db->get_where('base', array('nik' => $nik));
+		$this->db->select('base.nama, base.tempat_lahir, base.tanggal_lahir, base_updatable.foto');
+		$this->db->from('base');
+		$this->db->join('base_updatable', 'base.nik = base_updatable.nik', 'left');
+		$this->db->where('base.nik', $nik);
+		$query = $this->db->get();
 		return $query->row_array();
+	}
+
+	public function update_data($rawPenduduk)
+	{
+		$this->db->where('nik',$rawPenduduk->nik);
+    	$this->db->update('base_updatable',$rawPenduduk);
 	}
 }
