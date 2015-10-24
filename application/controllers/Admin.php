@@ -81,7 +81,7 @@ class Admin extends CI_Controller
 			$apiKey = $this->token_create($id, $appName, $email, $region);
 
 			$this->load->library('email');
-			$this->email->from('hafidzjazuli@gmail.com', 'Dinas Kependudukan Republik Indonesia');
+			$this->email->from('no-reply@dukcapil.kemendagri.go.id', 'Dinas Kependudukan Republik Indonesia');
 			$this->email->to($email);
 			$this->email->subject('Accept Token Request');
 			$message = "
