@@ -25,17 +25,17 @@ class Penduduk extends CI_Model
 	public function get_access_public($nik)
 	{
 		$this->db->select(
-			'base.nama',
-			'base.tempat_lahir',
-			'base.tanggal_lahir',
-			'base.jenis_kelamin',
-			'base_updatable.alamat',
-			'base_updatable.rt',
-			'base_updatable.rw',
-			'base_updatable.kelurahan',
-			'base_updatable.kecamatan',
-			'base_updatable.kabupaten',
-			'base_updatable.provinsi'
+			'base.nama,
+			base.tempat_lahir,
+			base.tanggal_lahir,
+			base.jenis_kelamin,
+			base_updatable.alamat,
+			base_updatable.rt,
+			base_updatable.rw,
+			base_updatable.kelurahan,
+			base_updatable.kecamatan,
+			base_updatable.kabupaten,
+			base_updatable.provinsi'
 		);
 		$this->db->from('base');
 		$this->db->join('base_updatable', 'base.nik = base_updatable.nik', 'left');

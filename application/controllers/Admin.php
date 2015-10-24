@@ -30,7 +30,7 @@ class Admin extends CI_Controller
 		$this->load->library('Cryptgenerator');
 		$this->load->library('encryption');
 
-		$raw = $appName.'&'.$id.'&'.$email.'&'.$region;
+		$raw = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
 		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
@@ -93,17 +93,10 @@ class Admin extends CI_Controller
 			</body></html>";
 			$this->email->message($message);
 			
-			// $to      = $email;
-			// $subject = 'test';
-			// $headers = 'From: hafidzjazuli@gmail.com' . "\r\n" .
-			//     'Reply-To: webmaster@example.com' . "\r\n" .
-			//     'X-Mailer: PHP/' . phpversion();
-			// mail($to, $subject, $message, $headers);
-			
 			if($this->email->send()) {
 				// Update status
 				$this->API->accept_app_req($id, $level);
-				redirect('Admin/verifikasi');
+				redirect('/admin/verifikasi');
 			} else {
 				echo "<script>alert('Gagal melakukan validasi!')</script>";
 			}
