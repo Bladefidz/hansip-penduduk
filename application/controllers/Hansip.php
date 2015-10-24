@@ -29,19 +29,32 @@ class Hansip extends REST_Controller
 			'kewarganegaraan'
 		);
 		$this->baseUpdatableCols = array(
-				'nik',
-				'foto',
-				'alamat',
-				'rt',
-				'rw',
-				'kecamatan',
-				'kelurahan',
-				'kabupaten',
-				'provinsi',
-				'status_perkawinan',
-				'pekerjaan',
-				'pendidikan_terakhir'
-			);
+			'nik',
+			'foto',
+			'alamat',
+			'rt',
+			'rw',
+			'kecamatan',
+			'kelurahan',
+			'kabupaten',
+			'provinsi',
+			'status_perkawinan',
+			'pekerjaan',
+			'pendidikan_terakhir'
+		);
+	}
+
+	/**
+	 * [token_decript description]
+	 * @param  [type] $toDec [description]
+	 * @return [type]        [description]
+	 */
+	private function tokenDecript($token)
+	{
+		$this->load->library('Cryptgenerator');
+		$this->load->library('encryption');
+
+		return $this->encryption->decrypt(urldecode($token));
 	}
 
 	/**
@@ -54,6 +67,8 @@ class Hansip extends REST_Controller
 
 		if(!$this->get('token', TRUE)) {
 			$this->response(array('status' => 'not authenticate'), 406);
+		} else {
+			$metaToken = $this->tokenDecript($this->get('token'));
 		}
 		
 		if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
@@ -83,6 +98,10 @@ class Hansip extends REST_Controller
 		if($data){
 			if (isset($data['foto'])) {
 				$data['foto'] = base64_encode($data['foto']);
+
+				if ($this->get('format') == 'html') {
+					$data['foto'] = '<img src="data:image/jpeg;base64,'.$data['foto'].'"/>';
+				}
 			}
 			
 			$this->response($data, 200);

@@ -12,13 +12,14 @@ class Gateway extends REST_Controller
 		$this->load->library('Cryptgenerator');
 		$this->load->library('encryption');
 
-		$id = $this->get('id');
+		$id = 123;
 		$physical = $this->get_physical_info();
 		$appName = "dummy";
 		$mac = str_replace('-', '', $physical[1]);
+        $region = "35";
 
-		$raw = $appName.'&'.$id.'&'.$mac;
-		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$mac;
+		$raw = $appName.'&'.$id.'&'.$region;
+		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
 		// $key = bin2hex($this->encryption->create_key(7));
@@ -28,7 +29,7 @@ class Gateway extends REST_Controller
 		// echo "Raw: ".$raw.'<br>';
 		// echo "Encryption Mode 1: ".$encModeOne.'<br>';
 		// echo "Encryption Mode 2: ".$encModeTwo.'<br>';
-		// echo "Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
+		echo '<br>'."Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
 	}
 
 	private function token_decript($toDec)
