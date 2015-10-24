@@ -81,7 +81,7 @@ class Admin extends CI_Controller
 			$apiKey = $this->token_create($id, $appName, $email, $region);
 
 			$this->load->library('email');
-			$this->email->from('no_reply@dukcapil.kemendagri.go.id', 'Dinas Kependudukan Republik Indonesia');
+			$this->email->from('hafidzjazuli@gmail.com', 'Dinas Kependudukan Republik Indonesia');
 			$this->email->to($email);
 			$this->email->subject('Accept Token Request');
 			$message = "
@@ -93,12 +93,19 @@ class Admin extends CI_Controller
 			</body></html>";
 			$this->email->message($message);
 			
+			// $to      = $email;
+			// $subject = 'test';
+			// $headers = 'From: hafidzjazuli@gmail.com' . "\r\n" .
+			//     'Reply-To: webmaster@example.com' . "\r\n" .
+			//     'X-Mailer: PHP/' . phpversion();
+			// mail($to, $subject, $message, $headers);
+			
 			if($this->email->send()) {
 				// Update status
 				$this->API->accept_app_req($id, $level);
 				redirect('Admin/verifikasi');
 			} else {
-				echo "<script>Gagal melakukan validasi.</script>";
+				echo "<script>alert('Gagal melakukan validasi!')</script>";
 			}
 		}
 	}
