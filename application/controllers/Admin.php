@@ -25,23 +25,16 @@ class Admin extends CI_Controller
 		$this->load->library('encryption');
 	}
 
-	private function token_get()
+	private function token_create($id, $appName, $email, $region)
 	{
-		$id = $this->get('id');
-		$physical = $this->get_physical_info();
-		$appName = "dummy";
-		$mac = str_replace('-', '', $physical[1]);
+		$this->load->library('Cryptgenerator');
+		$this->load->library('encryption');
 
-		$raw = $appName.'&'.$id.'&'.$mac;
-		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$mac;
+		$raw = $appName.'&'.$id.'&'.$email.'&'.$region;
+		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
-		return $encModeTwo;
-		
-		// echo "Raw: ".$raw.'<br>';
-		// echo "Encryption Mode 1: ".$encModeOne.'<br>';
-		// echo "Encryption Mode 2: ".$encModeTwo.'<br>';
-		// echo "Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
+		return urlencode($encModeTwo);
 	}
 	
 	public function index()
@@ -55,13 +48,18 @@ class Admin extends CI_Controller
 			$this->load->view('register');
 		} elseif ($this->input->method() == 'post') {
 			$newAppIdentity = array(
-				'app_name' => $this->input->post('nama_aplikasi', TRUE),
-				'email' => $this->input->post('email'),
-				'level' => $this->input->post('level'),
-				'status' => 0
+				'app_name' => $this->input->post('app_name', TRUE),
+				'email' => $this->input->post('email', TRUE),
+				'instansi' => $this->input->post('instansi', TRUE),
+				'alamat_instansi' => $this->input->post('alamat_instansi', TRUE),
+				'region' => $this->input->post('region', TRUE),
+				'level' => 0,
+				'status' => 0,
+				'date_created' => 'NOW()'
 			);
 
 			$this->API->register($newAppIdentity);
+			redirect('Admin/register');
 		}
 	}
 
@@ -74,45 +72,33 @@ class Admin extends CI_Controller
 			$this->load->view('verification', $data);
 			$this->load->view('footer');
 		} elseif ($this->input->method() == 'post') {
-			$status = $this->input->post('agree');
+			$appName = $this->input->post('app_name');
+			$email = $this->input->post('email');
+			$region = $this->input->post('region');
+			$id = $this->input->post('id');
+			$level = $this->input->post('level');
+			
+			$apiKey = $this->token_create($id, $appName, $email, $region);
 
-			if ($status === '1') {
-				$to = "somebody@example.com, somebodyelse@example.com";
-				$subject = "HTML email";
-				$message = "
-				<html>
-				<head>
-				<title>HTML email</title>
-				</head>
-				<body>
-				<p>This email contains HTML Tags!</p>
-				<table>
-				<tr>
-				<th>Nama Aplikasi</th>
-				<th>API Key</th>
-				</tr>
-				<tr>
-				<td>".$appName."</td>
-				<td>".$apiKey."</td>
-				</tr>
-				</table>
-				</body>
-				</html>
-				";
-
-				// Always set content-type when sending HTML email
-				$headers = "MIME-Version: 1.0" . "\r\n";
-				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-				// More headers
-				$headers .= 'From: <webmaster@example.com>' . "\r\n";
-				$headers .= 'Cc: myboss@example.com' . "\r\n";
-
-				mail($to,$subject,$message,$headers);
-			} elseif($status == '2') {
-
+			$this->load->library('email');
+			$this->email->from('no_reply@dukcapil.kemendagri.go.id', 'Dinas Kependudukan Republik Indonesia');
+			$this->email->to($email);
+			$this->email->subject('Accept Token Request');
+			$message = "
+			<html><head><title>Token Request</title></head><body>
+			<table>
+			<tr><th>Nama Aplikasi</th><th>API Key</th></tr>
+			<tr><td>".$appName."</td><td>".$apiKey."</td></tr>
+			</table>
+			</body></html>";
+			$this->email->message($message);
+			
+			if($this->email->send()) {
+				// Update status
+				$this->API->accept_app_req($id, $level);
+				redirect('Admin/verifikasi');
 			} else {
-
+				echo "<script>Gagal melakukan validasi.</script>";
 			}
 		}
 	}

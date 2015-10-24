@@ -24,7 +24,8 @@ class Penduduk extends CI_Model
 	 */
 	public function get_access_public($nik)
 	{
-		$this->db->select('base.nama',
+		$this->db->select(
+			'base.nama',
 			'base.tempat_lahir',
 			'base.tanggal_lahir',
 			'base.jenis_kelamin',
