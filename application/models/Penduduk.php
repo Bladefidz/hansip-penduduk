@@ -38,7 +38,22 @@ class Penduduk extends CI_Model
 		);
 		$this->db->from('base');
 		$this->db->join('base_updatable', 'base.nik = base_updatable.nik', 'left');
-		$this->db->where('nik', $nik);
+		$this->db->where('base.nik', $nik);
+		$query = $this->db->get();
+		return $query->row_array();
+	}
+
+	/**
+	 * [get_costum description]
+	 * @param  [type] $nik [description]
+	 * @return [type]      [description]
+	 */
+	public function get_costum($select, $nik)
+	{
+		$this->db->select($select);
+		$this->db->from('base');
+		$this->db->join('base_updatable', 'base.nik = base_updatable.nik', 'left');
+		$this->db->where('base.nik', $nik);
 		$query = $this->db->get();
 		return $query->row_array();
 	}

@@ -15,7 +15,7 @@ class API extends CI_Model
 	 * @param  [array] $indentity [description]
 	 * @return [type]            [description]
 	 */
-	public function request($indentity)
+	public function register($indentity)
 	{
 		$this->db->insert('api_gateway', $identify);
 	}

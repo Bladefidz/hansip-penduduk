@@ -21,8 +21,9 @@ class Gateway extends REST_Controller
 		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$mac;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
-		echo $encModeTwo;
-		echo $this->encryption->create_key(); 
+		// $key = bin2hex($this->encryption->create_key(7));
+		// echo $key;
+		echo urlencode($encModeTwo);
 		
 		// echo "Raw: ".$raw.'<br>';
 		// echo "Encryption Mode 1: ".$encModeOne.'<br>';
@@ -35,7 +36,7 @@ class Gateway extends REST_Controller
 		$this->load->library('Cryptgenerator');
 		$this->load->library('encryption');
 
-		return $this->encryption->decrypt($encModeTwo);
+		return $this->encryption->decrypt(urldecode($toDec));
 	}
 
 	private function auth_process()
