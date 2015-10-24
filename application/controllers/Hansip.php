@@ -13,29 +13,30 @@ require_once(APPPATH.'libraries/REST_Controller.php');
 */
 class Hansip extends REST_Controller
 {
-	public function __construct()
-	{
-		parent::__construct();
-
-		// $this->load->library('form_validation');
-		$this->load->model('Penduduk');
-	}
-
 	/**
 	 * [Melakukan pengambilan data melalui API]
 	 * @return [array]      [hasil parsing model ke array]
 	 */
 	public function data_get()
 	{
-		if(!$this->get('nik'))
-		{
-			$this->response(NULL, 400);
+		if(!$this->get('token', TRUE)) {
+			$this->response(array('status' => 'not authenticate'), 406);
+		}
+		
+		if(!$this->get('nik')) {
+			$this->response(array('status' => 'bad request899'), 400);
 		}
 
-		$data = $this->Penduduk->get_access_0($this->get('nik'));
-		$data['foto'] = base64_encode($data['foto']);
+		if(!$field = $this->get('field', TRUE)) {
+
+		}
+
+		$this->load->model('Penduduk');
+
+		$data = $this->Penduduk->get_access_gov($this->get('nik'));
 		
 		if($data){
+			$data['foto'] = base64_encode($data['foto']);
 			$this->response($data, 200);
 		}
 		else
@@ -48,8 +49,79 @@ class Hansip extends REST_Controller
 	 * [Melakukan input data melalui API]
 	 * @return 
 	 */
-	public function data_post()
+	protected function data_post()
 	{
-		$jenis_kelamin;
+		$token = $this->get('token', TRUE);
+
+		$baseKey = array('nama',
+			'tanggal_lahir',
+			'jenis_kelamin',
+			'golongan_darah',
+			'tanggal_diterbitkan',
+			'nip_pencatat',
+			'kewarganegaraan'
+		);
+
+		$base = array();
+		// $base = array(
+		// 	'nama' => $this->post('tempat_lahir'),
+		// 	'tanggal_lahir' => $this->post('tempat_lahir'),
+		// 	'jenis_kelamin' => $this->post('jenis_kelamin'),
+		// 	'golongan_darah' => $this->post('golongan_darah'),
+		// 	'tanggal_diterbitkan' => $this->post('tanggal_diterbitkan'),
+		// 	'nip_pencatat' => $this->post('nip_pencatat'),
+		// 	'kewarganegaraan' => $this->post('kewarganegaraan')
+		// );
+
+		foreach ($baseKey as $key) {
+			if (isset($_POST[$key])) {
+				$base[$key] = $this->post($key);
+			}
+		}
+
+		$baseUpdatableKey = array(
+			'nik' => $this->post('nik'),
+			'foto' => $this->post('foto'),
+			'alamat' => $this->post('alamat'),
+			'rt' => $this->post('rt'),
+			'rw' => $this->post('rw'),
+			'kecamatan' => $this->post('kecamatan'),
+			'kelurahan' => $this->post('kelurahan'),
+			'kabupaten' => $this->post('kabupaten'),
+			'provinsi' => $this->post('provinsi'),
+			'status_perkawinan' => $this->post('status_perkawinan'),
+			'pekerjaan' => $this->post('pekerjaan'),
+			'pend_terakhir' => $this->post('pendidikan_terakhir')
+		);
+		// $baseUpdatable = array(
+		// 	'nik' => $this->post('nik'),
+		// 	'foto' => $this->post('foto'),
+		// 	'alamat' => $this->post('alamat'),
+		// 	'rt' => $this->post('rt'),
+		// 	'rw' => $this->post('rw'),
+		// 	'kecamatan' => $this->post('kecamatan'),
+		// 	'kelurahan' => $this->post('kelurahan'),
+		// 	'kabupaten' => $this->post('kabupaten'),
+		// 	'provinsi' => $this->post('provinsi'),
+		// 	'status_perkawinan' => $this->post('status_perkawinan'),
+		// 	'pekerjaan' => $this->post('pekerjaan'),
+		// 	'pend_terakhir' => $this->post('pendidikan_terakhir')
+		// );
+
+		$this->load->model('Penduduk');
+
+		if(!$this->get('nik')) {
+			if ($this->Penduduk->insert($base)) {
+				$this->response(array('status' => 'success'));
+			} else {
+				$this->response(array('status' => 'failed'));
+			}
+		} else {
+			if ($this->Penduduk->update($baseUpdatable)) {
+				$this->response(array('status' => 'success'));
+			} else {
+				$this->response(array('status' => 'failed'));
+			}
+		}
 	}
 }

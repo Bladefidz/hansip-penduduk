@@ -16,7 +16,7 @@ class Admin extends CI_Controller
 		parent::__construct();
 
 		$this->load->library('form_validation');
-		$this->load->library('url');
+		$this->load->helper('url');
 		$this->load->model('Penduduk');
 	}
 	
@@ -25,7 +25,6 @@ class Admin extends CI_Controller
 	}
 	
 	function register(){
-		
 		$to = "somebody@example.com, somebodyelse@example.com";
 		$subject = "HTML email";
 
