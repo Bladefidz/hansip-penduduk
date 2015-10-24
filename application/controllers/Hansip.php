@@ -71,7 +71,14 @@ class Hansip extends REST_Controller
 		$this->load->model('API');
 
 		if(!$this->get('token')) {
-			$this->response(array('status' => 'not authenticate'), 406);
+
+			if ($this->get('nik')) {
+				$data = $this->Penduduk->get_access_public($this->get('nik'));
+				$this->response($data, 200);
+			} else {
+				$this->response(array('status' => 'not authenticate'), 406);
+			}
+			
 		} else {
 			$metaToken = $this->tokenDecript($this->get('token'));
 
