@@ -70,7 +70,7 @@ class Hansip extends REST_Controller
 	{
 		$this->load->model('API');
 
-		if(!$this->get('token')) {
+		if(!isset($_GET['token'])) {
 
 			if ($this->get('nik')) {
 				$data = $this->Penduduk->get_access_public($this->get('nik'));

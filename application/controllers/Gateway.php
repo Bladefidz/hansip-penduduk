@@ -12,11 +12,11 @@ class Gateway extends REST_Controller
 		$this->load->library('Cryptgenerator');
 		$this->load->library('encryption');
 
-		$id = 123;
+		$id = 128;
 		$physical = $this->get_physical_info();
-		$appName = "dummy";
-        $email = "dummy@hoolahop.co.id";
-        $region = "JAWA TIMUR";
+		$appName = "SIM Manajemen Karya";
+        $email = "gamerhacking@gmail.com";
+        $region = "JAKARTA";
 		$mac = str_replace('-', '', $physical[1]);
 
 		$raw = $appName.'&'.$id.'&'.$email.'&'.$region;
@@ -30,7 +30,7 @@ class Gateway extends REST_Controller
 		// echo "Raw: ".$raw.'<br>';
 		// echo "Encryption Mode 1: ".$encModeOne.'<br>';
 		// echo "Encryption Mode 2: ".$encModeTwo.'<br>';
-		echo '<br>'."Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
+		echo '<br>'."Decryption Mode 2: ".$this->token_decript(($encModeTwo)).'<br>';
         $infoToken = explode('&', $this->encryption->decrypt($encModeTwo));
         var_dump($infoToken);
 	}

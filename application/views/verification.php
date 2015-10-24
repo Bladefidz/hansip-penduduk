@@ -47,7 +47,7 @@
                                                 <td><?php echo $a['email'] ?></td>
                                                 <td><?php echo $a['instansi'] ?></td>
                                                 <td><?php echo $a['alamat_instansi'] ?></td>
-                                                <td name="region" value="<?php echo $a['region'] ?>"><?php echo $a['region'] ?></td>
+                                                <td><?php echo $a['region'] ?></td>
                                                 <td><?php echo $a['level'] ?></td>
                                                 <td><?php echo $a['date_created'] ?></td>
                                                 <?php echo form_open("Admin/verifikasi"); ?>
@@ -62,6 +62,7 @@
                                                     <input type="hidden" name="id" value="<?php echo $a['id'] ?>">
                                                     <input type="hidden" name="app_name" value="<?php echo $a['app_name'] ?>">
                                                     <input type="hidden" name="email" value="<?php echo $a['email'] ?>">
+                                                    <input type="hidden" name="region" value="<?php echo $a['region'] ?>">
                                                     <input class="btn btn-success" type="submit" name="allow" value="Allow">
                                                 </td>
                                                 <?php echo form_close(); ?>
