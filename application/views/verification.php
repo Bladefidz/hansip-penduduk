@@ -37,7 +37,7 @@
                                         </thead>
                                         <tbody>
                                             
-                                        </tbody>>
+                                        </tbody>
                                         <?php form_close(); ?>
                                     </table>
                                 </div>

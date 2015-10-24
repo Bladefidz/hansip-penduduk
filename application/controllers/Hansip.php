@@ -97,7 +97,7 @@ class Hansip extends REST_Controller
 							$selectCol = "";
 							$cols = explode('-', $field);
 
-							if($this->get('alamat_advanced')) {
+							if(in_array('alamat_advanced', $cols)) {
 								array_push($cols, 'rt', 'rw', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi');
 							}
 
