@@ -187,7 +187,7 @@ class Hansip extends REST_Controller
 		}
 	}
 
-	public function update_post()
+	public function update_get()
 	{
 		$token = $this->get('token', TRUE);
 
@@ -197,15 +197,17 @@ class Hansip extends REST_Controller
 			$baseUpdatable['nik'] = $this->get('nik');
 
 			foreach ($this->baseUpdatableCols as $key) {
-				if (isset($_POST[$key])) {
-					$baseUpdatable[$key] = $this->post($key);
+				if (isset($_GET[$key])) {
+					$baseUpdatable[$key] = $this->get($key);
 				}
 			}
 
 			if ($this->Penduduk->update($baseUpdatable)) {
-				$this->response(array('status' => 'success'));
+				$this->response(array('status' => 'success'), 200);
+				echo "sukses";
 			} else {
-				$this->response(array('status' => 'failed'));
+				$this->response(array('status' => 'failed'), 400);
+				echo "gagal";
 			}
 		}
 	}
@@ -222,9 +224,9 @@ class Hansip extends REST_Controller
 		}
 
 		if ($this->Penduduk->insert($base)) {
-			$this->response(array('status' => 'success'));
+			$this->response(array('status' => 'success'), 200);
 		} else {
-			$this->response(array('status' => 'failed'));
+			$this->response(array('status' => 'failed'), 400);
 		}
 	}
 }

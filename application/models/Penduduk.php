@@ -80,8 +80,9 @@ class Penduduk extends CI_Model
 	 */
 	public function insert($base)
 	{
-		$this->db->where('nik', $base->nik);
+		$this->db->where('nik', $base["nik"]);
     	$this->db->insert('base_updatable', $base);
+		return $this->db->affected_rows() > 0;
 	}
 
 	/**
@@ -91,7 +92,8 @@ class Penduduk extends CI_Model
 	 */
 	public function update($baseUpdatable)
 	{
-		$this->db->where('nik', $baseUpdatable->nik);
+		$this->db->where('nik', $baseUpdatable['nik']);
     	$this->db->update('base_updatable', $baseUpdatable);
+		return $this->db->affected_rows() > 0;
 	}
 }
