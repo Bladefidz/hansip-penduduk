@@ -53,7 +53,7 @@ $route['default_controller'] = 'Admin';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['data/token/([A-Z0-9.-]+)/nik/([0-9]+)/field/([a-z.-]+)'] = function($token, $nik, $field)
+$route['data/token/(:any)/nik/([0-9]+)/field/([a-z.-]+)'] = function($token, $nik, $field)
 {
 	return 'hansip/data/token/'. $token .'/nik/'. $nik .'/field/'. strtolower($field);	
 };

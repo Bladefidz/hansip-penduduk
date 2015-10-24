@@ -26,23 +26,41 @@
 							<div class="col-md-12">
 								<div class="panel-body">
 									<div class="form-horizontal" role="form">
-										<?php form_open("Admin/register"); ?>
+										<?php echo form_open("Admin/register"); ?>
 										<div class="form-group">
-											<label class="col-sm-2 control-label" for="field-1">Nama Applikasi</label>
+											<label class="col-sm-2 control-label" for="nama_aplikasi">Nama Applikasi</label>
 											<div class="col-sm-10">
-												<input class="form-control" name="app_name" id="field-1" type="text" required>
+												<input class="form-control" name="app_name" id="nama_aplikasi" type="text" required>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-sm-2 control-label" for="field-1">Email</label>
+											<label class="col-sm-2 control-label" for="email">Email</label>
 											<div class="col-sm-10">
-												<input class="form-control" name="token" id="field-1" type="text" required>
+												<input class="form-control" name="email" id="email" type="text" required>
 											</div>
 										</div>
 										<div class="form-group">
-											<button class="btn btn-single pull-right" style="color:#ffffff; background-color:#ff0000; border-color:#ff0000;" id="submit" name="submit" >Submit</button>
+											<label class="col-sm-2 control-label" for="instansi">Instansi</label>
+											<div class="col-sm-10">
+												<input class="form-control" name="instansi" id="instansi" type="text" required>
+											</div>
 										</div>
-										<?php form_close(); ?>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="alamat">Alamat Instansi</label>
+											<div class="col-sm-10">
+												<input class="form-control" name="alamat_instansi" id="alamat" type="text" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="alamat">Provinsi</label>
+											<div class="col-sm-10">
+												<input class="form-control" name="region" id="region" type="text" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<input class="btn btn-single pull-right" style="color:#ffffff; background-color:#ff0000; border-color:#ff0000;" id="submit" name="daftar" value="Daftar" type="submit">
+										</div>
+										<?php echo form_close(); ?>
 									</div>
 								</div>
 							</div>
