@@ -20,6 +20,8 @@ class Hansip extends REST_Controller
 	{
 		parent::__construct();
 
+		$this->load->model('Penduduk');
+
 		$this->baseCols = array(
 			'nama',
 			'tempat_lahir',
@@ -66,7 +68,6 @@ class Hansip extends REST_Controller
 	 */
 	public function data_get()
 	{
-		$this->load->model('Penduduk');
 		$this->load->model('API');
 
 		if(!$this->get('token')) {
@@ -95,6 +96,10 @@ class Hansip extends REST_Controller
 						} else {
 							$selectCol = "";
 							$cols = explode('-', $field);
+
+							if($this->get('alamat_advanced')) {
+								array_push($cols, 'rt', 'rw', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi');
+							}
 
 							foreach ($cols as $col) {
 								if (in_array($col, $this->baseCols)) {
@@ -136,8 +141,6 @@ class Hansip extends REST_Controller
 	{
 		$token = $this->get('token', TRUE);
 
-		$this->load->model('Penduduk');
-
 		if(!$this->get('nik')) {
 			$base = array();
 
@@ -168,4 +171,29 @@ class Hansip extends REST_Controller
 			}
 		}
 	}
+
+	public function update_post()
+	{
+		$token = $this->get('token', TRUE);
+
+		$baseUpdatable = array();
+
+		if ($this->get('nik')) {
+			$baseUpdatable['nik'] = $this->get('nik');
+
+			foreach ($this->baseUpdatableCols as $key) {
+				if (isset($_POST[$key])) {
+					$baseUpdatable[$key] = $this->post($key);
+				}
+			}
+
+			if ($this->Penduduk->update($baseUpdatable)) {
+				$this->response(array('status' => 'success'));
+			} else {
+				$this->response(array('status' => 'failed'));
+			}
+		}
+	}
+
+	public function
 }

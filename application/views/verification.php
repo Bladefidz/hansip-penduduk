@@ -16,25 +16,26 @@
                         <div class="col-md-12">
                             <div class="panel-body">
                                 <div class="form-horizontal" role="form">
-                                    <div class='table-responsive'>
-                                        <?php form_open("Admin/register"); ?>
-                                        <div class='table-toolbar' style='margin-bottom: 15px;'>
-                                            <div class='btn-group'>
-                                                <button class='btn btn-success btn-xs disabled'><?php echo $numDataCpd; ?> calon peserta didik</button>
-                                            </div>
-                                            <div class='btn-group'>
-                                                <a href=<?php echo HOME.'/pendaftaran/verifikasi' ?>><button class='btn btn-primary btn-xs'>Data Baru <i class='glyphicon glyphicon-plus icon-white'></i></button></a>
-                                            </div>
-                                            <div class='btn-group pull-right'>
-                                                <button data-toggle='dropdown' class='btn btn-default dropdown-toggle btn-xs'>Simpan <span class='caret'></span></button>
-                                                <ul class='dropdown-menu'>
-                                                    <li><a href='#'>PDF</a></li>
-                                                    <li><a href='#'>Excel</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                    <script type="text/javascript">
+                                        jQuery(document).ready(function($)
+                                        {
+                                            $("#example-1").dataTable({
+                                                aLengthMenu: [
+                                                    [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+                                                ]
+                                            });
+                                        });
+                                    </script>
+                                    <table id="example-1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <?php form_open("Admin/verify"); ?>
+                                        <thead>
+                                            
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>>
                                         <?php form_close(); ?>
-                                    </div>
+                                    </table>
                                 </div>
                             </div>
                         </div>
