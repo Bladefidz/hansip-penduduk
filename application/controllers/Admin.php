@@ -20,11 +20,11 @@ class Admin extends CI_Controller
 		$this->load->model('Penduduk');
 	}
 	
-	function index(){
+	function index() {
 		$this->load->view("index.php");
 	}
 	
-	function register(){
+	function register() {
 		$to = "somebody@example.com, somebodyelse@example.com";
 		$subject = "HTML email";
 
@@ -59,5 +59,9 @@ class Admin extends CI_Controller
 
 		mail($to,$subject,$message,$headers);
 	}
-	
+
+	function verify() {
+		$this->load->view('header');
+		$this->load->view('footer');
+	}	
 }

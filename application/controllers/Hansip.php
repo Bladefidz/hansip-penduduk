@@ -33,6 +33,10 @@ class Hansip extends REST_Controller
 
 		$this->load->model('Penduduk');
 
+		// GET
+		foreach ($_GET as $key => $value) {
+			# code...
+		}
 		$data = $this->Penduduk->get_access_gov($this->get('nik'));
 		
 		if($data){
@@ -53,16 +57,6 @@ class Hansip extends REST_Controller
 	{
 		$token = $this->get('token', TRUE);
 
-		$baseKey = array('nama',
-			'tanggal_lahir',
-			'jenis_kelamin',
-			'golongan_darah',
-			'tanggal_diterbitkan',
-			'nip_pencatat',
-			'kewarganegaraan'
-		);
-
-		$base = array();
 		// $base = array(
 		// 	'nama' => $this->post('tempat_lahir'),
 		// 	'tanggal_lahir' => $this->post('tempat_lahir'),
@@ -72,27 +66,6 @@ class Hansip extends REST_Controller
 		// 	'nip_pencatat' => $this->post('nip_pencatat'),
 		// 	'kewarganegaraan' => $this->post('kewarganegaraan')
 		// );
-
-		foreach ($baseKey as $key) {
-			if (isset($_POST[$key])) {
-				$base[$key] = $this->post($key);
-			}
-		}
-
-		$baseUpdatableKey = array(
-			'nik' => $this->post('nik'),
-			'foto' => $this->post('foto'),
-			'alamat' => $this->post('alamat'),
-			'rt' => $this->post('rt'),
-			'rw' => $this->post('rw'),
-			'kecamatan' => $this->post('kecamatan'),
-			'kelurahan' => $this->post('kelurahan'),
-			'kabupaten' => $this->post('kabupaten'),
-			'provinsi' => $this->post('provinsi'),
-			'status_perkawinan' => $this->post('status_perkawinan'),
-			'pekerjaan' => $this->post('pekerjaan'),
-			'pend_terakhir' => $this->post('pendidikan_terakhir')
-		);
 		// $baseUpdatable = array(
 		// 	'nik' => $this->post('nik'),
 		// 	'foto' => $this->post('foto'),
@@ -111,12 +84,50 @@ class Hansip extends REST_Controller
 		$this->load->model('Penduduk');
 
 		if(!$this->get('nik')) {
+			$base = array();
+			$baseKey = array('nama',
+				'tanggal_lahir',
+				'jenis_kelamin',
+				'golongan_darah',
+				'tanggal_diterbitkan',
+				'nip_pencatat',
+				'kewarganegaraan'
+			);
+
+			foreach ($baseKey as $key) {
+				if (isset($_POST[$key])) {
+					$base[$key] = $this->post($key);
+				}
+			}
+
 			if ($this->Penduduk->insert($base)) {
 				$this->response(array('status' => 'success'));
 			} else {
 				$this->response(array('status' => 'failed'));
 			}
 		} else {
+			$baseUpdatable = array();
+			$baseUpdatableKey = array(
+				'nik',
+				'foto',
+				'alamat',
+				'rt',
+				'rw',
+				'kecamatan',
+				'kelurahan',
+				'kabupaten',
+				'provinsi',
+				'status_perkawinan',
+				'pekerjaan',
+				'pendidikan_terakhir'
+			);
+
+			foreach ($baseUpdatableKey as $key) {
+				if (isset($_POST[$key])) {
+					$baseUpdatableKey[$key] = $this->post($key);
+				}
+			}
+
 			if ($this->Penduduk->update($baseUpdatable)) {
 				$this->response(array('status' => 'success'));
 			} else {
