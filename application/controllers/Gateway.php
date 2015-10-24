@@ -7,22 +7,32 @@ require_once(APPPATH.'libraries/REST_Controller.php');
 */
 class Gateway extends REST_Controller
 {
-
-	public function token_get()
+	protected function token_get()
 	{
-		$rawSatuan = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
-		$encSatuan = array('j', 'r', 's', 't', 'G', 'H', 'c', 'f', 'y', 'Z');		
+		$this->load->library('Cryptgenerator');
+		$this->load->library('encryption');
 
 		$id = $this->get('id');
 		$physical = $this->get_physical_info();
+
 		$access = "1-2-3-4";
 		$region = "35";
-
-		$encId = str_replace($rawSatuan, $encSatuan, $id);
 		$mac = str_replace('-', '', $physical[1]);
+
+		$raw = $access.'&'.$region.'&'.$id.'&'.$mac;
+		$encModeOne = $access.'&'.$region.'&'.Cryptgenerator::encrypt($id).'&'.$mac;
+		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
-		echo $encId.'<br>';
-		echo $mac.'<br>';
+		echo "Raw: ".$raw.'<br>';
+		echo "Encryption Mode 1: ".$encModeOne.'<br>';
+		echo "Encryption Mode 2: ".$encModeTwo.'<br>';
+		echo "Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
+	}
+
+	private function auth_process()
+	{
+		$this->load->library('auth');
+		$this->auth->test('yo');
 	}
 
 	private function get_physical_info()

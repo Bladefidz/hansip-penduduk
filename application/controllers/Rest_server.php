@@ -10,4 +10,13 @@ class Rest_server extends CI_Controller {
 
         $this->load->view('rest_server');
     }
+
+    public function test_post()
+    {
+    	if(!$this->input->get('nik')) {
+    		$baseUpdatable = array(
+    			'nik' => $this->input->post('nik');
+    		);
+    	}
+    }
 }
