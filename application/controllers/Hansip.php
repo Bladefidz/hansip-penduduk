@@ -195,5 +195,21 @@ class Hansip extends REST_Controller
 		}
 	}
 
-	public function
+	public function insert_post()
+	{
+		$token = $this->get('token', TRUE);
+		$base = array();
+
+		foreach ($this->baseCols as $key) {
+			if (isset($_POST[$key])) {
+				$base[$key] = $this->post($key);
+			}
+		}
+
+		if ($this->Penduduk->insert($base)) {
+			$this->response(array('status' => 'success'));
+		} else {
+			$this->response(array('status' => 'failed'));
+		}
+	}
 }
