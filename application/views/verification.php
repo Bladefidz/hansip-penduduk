@@ -43,8 +43,8 @@
                                         <tbody>
                                         <?php foreach ($app as $a): ?>
                                             <tr>
-                                                <td name="app_name" value="<?php echo $a['app_name'] ?>"><?php echo $a['app_name'] ?></td>
-                                                <td name="email" value="<?php echo $a['email'] ?>"><?php echo $a['email'] ?></td>
+                                                <td><?php echo $a['app_name'] ?></td>
+                                                <td><?php echo $a['email'] ?></td>
                                                 <td><?php echo $a['instansi'] ?></td>
                                                 <td><?php echo $a['alamat_instansi'] ?></td>
                                                 <td name="region" value="<?php echo $a['region'] ?>"><?php echo $a['region'] ?></td>
@@ -60,6 +60,8 @@
                                                 </td>
                                                 <td>
                                                     <input type="hidden" name="id" value="<?php echo $a['id'] ?>">
+                                                    <input type="hidden" name="app_name" value="<?php echo $a['app_name'] ?>">
+                                                    <input type="hidden" name="email" value="<?php echo $a['email'] ?>">
                                                     <input class="btn btn-success" type="submit" name="allow" value="Allow">
                                                 </td>
                                                 <?php echo form_close(); ?>
