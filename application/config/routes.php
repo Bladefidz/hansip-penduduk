@@ -57,3 +57,8 @@ $route['data/token/([A-Z0-9.-]+)/nik/([0-9]+)/field/([a-z.-]+)'] = function($tok
 {
 	return 'hansip/data/token/'. $token .'/nik/'. $nik .'/field/'. strtolower($field);	
 };
+
+$route['data/token/([A-Z0-9.-]+)'] = function($token)
+{
+	return 'hansip/data/token/'. $token;	
+};

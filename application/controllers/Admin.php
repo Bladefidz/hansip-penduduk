@@ -25,7 +25,6 @@ class Admin extends CI_Controller
 	}
 	
 	function register(){
-		
 		$to = "somebody@example.com, somebodyelse@example.com";
 		$subject = "HTML email";
 
