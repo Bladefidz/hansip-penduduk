@@ -30,8 +30,8 @@ class Admin extends CI_Controller
 		$this->load->library('Cryptgenerator');
 		$this->load->library('encryption');
 
-		$raw = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
-		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
+		$raw = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
+		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
 		return urlencode($encModeTwo);
@@ -52,7 +52,7 @@ class Admin extends CI_Controller
 				'email' => $this->input->post('email', TRUE),
 				'instansi' => $this->input->post('instansi', TRUE),
 				'alamat_instansi' => $this->input->post('alamat_instansi', TRUE),
-				'region' => $this->input->post('region', TRUE),
+				'region' => strtoupper(str_replace(' ', '_', $this->input->post('region', TRUE))),
 				'level' => 0,
 				'status' => 0,
 				'date_created' => 'NOW()'
@@ -78,7 +78,7 @@ class Admin extends CI_Controller
 			$id = $this->input->post('id');
 			$level = $this->input->post('level');
 			
-			$apiKey = $this->token_create($id, $appName, $email, $region);
+			$apiKey = $this->token_create($id, $appName, $region);
 
 			$this->load->library('email');
 			$this->email->from('no-reply@dukcapil.kemendagri.go.id', 'Dinas Kependudukan Republik Indonesia');

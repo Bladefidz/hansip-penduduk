@@ -63,6 +63,15 @@ class Hansip extends REST_Controller
 	}
 
 	/**
+	 * [tokenChecker description]
+	 * @return [type] [description]
+	 */
+	private function tokenChecker()
+	{
+
+	}
+
+	/**
 	 * [Melakukan pengambilan data melalui API]
 	 * @return [array]      [hasil parsing model ke array]
 	 */
@@ -88,8 +97,7 @@ class Hansip extends REST_Controller
 				$meta = array(
 					'app_name' => $infoToken[0],
 					'id' => $infoToken[1],
-					'email' => $infoToken[2],
-					'region' => $infoToken[3]
+					'region' => $infoToken[2]
 				);
 
 				$decRes = $this->API->authId($meta['id']);
@@ -99,8 +107,6 @@ class Hansip extends REST_Controller
 						if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
 							$this->response(array('status' => 'bad request'), 400);
 						} else {
-							$data = $this->Penduduk->get_access_gov($this->get('nik'));
-
 							if(!$field = $this->get('field', TRUE)) {
 								$data = $this->Penduduk->get_access_public($nik);
 							} else {

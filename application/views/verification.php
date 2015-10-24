@@ -34,7 +34,6 @@
                                                 <th>Instansi</th>
                                                 <th>Alamat Instansi</th>
                                                 <th>Provinsi</th>
-                                                <th>Level</th>
                                                 <th>Tanggal Daftar</th>
                                                 <th>Level</th>
                                                 <th>Aksi</th>
@@ -48,7 +47,6 @@
                                                 <td><?php echo $a['instansi'] ?></td>
                                                 <td><?php echo $a['alamat_instansi'] ?></td>
                                                 <td><?php echo $a['region'] ?></td>
-                                                <td><?php echo $a['level'] ?></td>
                                                 <td><?php echo $a['date_created'] ?></td>
                                                 <?php echo form_open("Admin/verifikasi"); ?>
                                                 <td>
