@@ -20,6 +20,15 @@ class API extends CI_Model
 		$this->db->insert('api_gateway', $identify);
 	}
 
+    public function authId($id)
+    {
+        $this->db->select('status');
+        $this->db->from('api_gateway');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
 	/**
 	 * [get_app_req description]
 	 * @return [type] [description]

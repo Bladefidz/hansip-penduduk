@@ -15,11 +15,12 @@ class Gateway extends REST_Controller
 		$id = 123;
 		$physical = $this->get_physical_info();
 		$appName = "dummy";
+        $email = "dummy@hoolahop.co.id";
+        $region = "JAWA TIMUR";
 		$mac = str_replace('-', '', $physical[1]);
-        $region = "35";
 
-		$raw = $appName.'&'.$id.'&'.$region;
-		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
+		$raw = $appName.'&'.$id.'&'.$email.'&'.$region;
+		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
 		// $key = bin2hex($this->encryption->create_key(7));
@@ -30,6 +31,8 @@ class Gateway extends REST_Controller
 		// echo "Encryption Mode 1: ".$encModeOne.'<br>';
 		// echo "Encryption Mode 2: ".$encModeTwo.'<br>';
 		echo '<br>'."Decryption Mode 2: ".$this->encryption->decrypt($encModeTwo).'<br>';
+        $infoToken = explode('&', $this->encryption->decrypt($encModeTwo));
+        var_dump($infoToken);
 	}
 
 	private function token_decript($toDec)

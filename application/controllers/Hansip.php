@@ -20,7 +20,9 @@ class Hansip extends REST_Controller
 	{
 		parent::__construct();
 
-		$this->baseCols = array('nama',
+		$this->baseCols = array(
+			'nama',
+			'tempat_lahir',
 			'tanggal_lahir',
 			'jenis_kelamin',
 			'golongan_darah',
@@ -30,6 +32,7 @@ class Hansip extends REST_Controller
 		);
 		$this->baseUpdatableCols = array(
 			'nik',
+			'agama',
 			'foto',
 			'alamat',
 			'rt',
@@ -64,51 +67,64 @@ class Hansip extends REST_Controller
 	public function data_get()
 	{
 		$this->load->model('Penduduk');
+		$this->load->model('API');
 
-		if(!$this->get('token', TRUE)) {
+		if(!$this->get('token')) {
 			$this->response(array('status' => 'not authenticate'), 406);
 		} else {
 			$metaToken = $this->tokenDecript($this->get('token'));
-		}
-		
-		if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
-			$this->response(array('status' => 'bad request'), 400);
-		}
+			$infoToken = explode('&', $metaToken);
 
-		$data = $this->Penduduk->get_access_gov($this->get('nik'));
-		if(!$field = $this->get('field', TRUE)) {
-			$data = $this->Penduduk->get_access_public($nik);
-		} else {
-			$selectCol = "";
-			$cols = explode('-', $field);
+			$meta = array(
+				'app_name' => $infoToken[0],
+				'id' => $infoToken[1],
+				'email' => $infoToken[2],
+				'region' => $infoToken[3]
+			);
 
-			foreach ($cols as $col) {
-				if (in_array($col, $this->baseCols)) {
-					$selectCol .= "base.".$col.","; 
-				} elseif (in_array($col, $this->baseUpdatableCols)) {
-					$selectCol .= "base_updatable.".$col.",";
-				} else {
-					continue;
+			$decRes = $this->API->authId($meta['id']);
+			if (!empty($decRes)) {
+				if ($decRes['status'] != '0') {
+					if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
+						$this->response(array('status' => 'bad request'), 400);
+					} else {
+						$data = $this->Penduduk->get_access_gov($this->get('nik'));
+
+						if(!$field = $this->get('field', TRUE)) {
+							$data = $this->Penduduk->get_access_public($nik);
+						} else {
+							$selectCol = "";
+							$cols = explode('-', $field);
+
+							foreach ($cols as $col) {
+								if (in_array($col, $this->baseCols)) {
+									$selectCol .= "base.".$col.","; 
+								} elseif (in_array($col, $this->baseUpdatableCols)) {
+									$selectCol .= "base_updatable.".$col.",";
+								} else {
+									continue;
+								}
+							}
+
+							$data = $this->Penduduk->get_costum(substr_replace($selectCol, '', -1), $this->get('nik'));
+						}
+						
+						if($data){
+							if (isset($data['foto'])) {
+								$data['foto'] = base64_encode($data['foto']);
+
+								if ($this->get('format') == 'html') {
+									$data['foto'] = '<img src="data:image/jpeg;base64,'.$data['foto'].'"/>';
+								}
+							}
+							
+							$this->response($data, 200);
+						} else {
+							$this->response(NULL, 404);
+						}
+					}
 				}
 			}
-
-			$data = $this->Penduduk->get_costum(substr_replace($selectCol, '', -1), $this->get('nik'));
-		}
-		
-		if($data){
-			if (isset($data['foto'])) {
-				$data['foto'] = base64_encode($data['foto']);
-
-				if ($this->get('format') == 'html') {
-					$data['foto'] = '<img src="data:image/jpeg;base64,'.$data['foto'].'"/>';
-				}
-			}
-			
-			$this->response($data, 200);
-		}
-		else
-		{
-			$this->response(NULL, 404);
 		}
 	}
 
