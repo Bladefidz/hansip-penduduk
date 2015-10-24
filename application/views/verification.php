@@ -30,13 +30,37 @@
                                         <?php form_open("Admin/verify"); ?>
                                         <thead>
                                             <tr>
-                                                <td>Nama Aplikasi</td>
-                                                <td>Email</td>
-                                                <td>Instansi</td>
+                                                <th>Nama Aplikasi</th>
+                                                <th>Email</th>
+                                                <th>Instansi</th>
+                                                <th>Alamat Instansi</th>
+                                                <th>Level</th>
+                                                <th>Tanggal Daftar</th>
+                                                <th>Level</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
+                                        <?php foreach ($app as $a): ?>
+                                            <tr>
+                                                <td><?php echo $a['app_name'] ?></td>
+                                                <td><?php echo $a['email'] ?></td>
+                                                <td><?php echo $a['instansi'] ?></td>
+                                                <td><?php echo $a['alamat_instansi'] ?></td>
+                                                <td><?php echo $a['level'] ?></td>
+                                                <td><?php echo $a['date_created'] ?></td>
+                                                <td>
+                                                    <select name="level" class="form-control">
+                                                        <option value="1">Umum</option>
+                                                        <option value="2">Instansi</option>
+                                                        <option value="3">Khusus</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input class="btn btn-success" type="submit" value="Allow">
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                         </tbody>
                                         <?php form_close(); ?>
                                     </table>

@@ -35,10 +35,10 @@ class API extends CI_Model
 	 */
 	public function get_app_pending_req()
 	{
-		$this->db->select('app_name, email, level, date_created');
+		$this->db->select('app_name, email, instansi, alamat_instansi, region, level, date_created');
 		$this->db->from('api_gateway');
-		$this->db->where('status', 0);
+		$this->db->where('status', '0');
 		$query = $this->db->get();
-		return $query->row_array();
+		return $query->result_array();
 	}
 }

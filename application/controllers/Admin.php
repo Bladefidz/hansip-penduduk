@@ -68,7 +68,7 @@ class Admin extends CI_Controller
 	public function verifikasi()
 	{
 		if ($this->input->method() == 'get') {
-			$data = $this->API->get_app_pending_req();
+			$data['app'] = $this->API->get_app_pending_req();
 
 			$this->load->view('header');
 			$this->load->view('verification', $data);

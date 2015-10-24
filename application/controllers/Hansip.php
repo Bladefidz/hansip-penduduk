@@ -74,61 +74,69 @@ class Hansip extends REST_Controller
 			$this->response(array('status' => 'not authenticate'), 406);
 		} else {
 			$metaToken = $this->tokenDecript($this->get('token'));
-			$infoToken = explode('&', $metaToken);
 
-			$meta = array(
-				'app_name' => $infoToken[0],
-				'id' => $infoToken[1],
-				'email' => $infoToken[2],
-				'region' => $infoToken[3]
-			);
+			if (!empty($metaToken)) {
+				$infoToken = explode('&', $metaToken);
 
-			$decRes = $this->API->authId($meta['id']);
-			if (!empty($decRes)) {
-				if ($decRes['status'] != '0') {
-					if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
-						$this->response(array('status' => 'bad request'), 400);
-					} else {
-						$data = $this->Penduduk->get_access_gov($this->get('nik'));
+				$meta = array(
+					'app_name' => $infoToken[0],
+					'id' => $infoToken[1],
+					'email' => $infoToken[2],
+					'region' => $infoToken[3]
+				);
 
-						if(!$field = $this->get('field', TRUE)) {
-							$data = $this->Penduduk->get_access_public($nik);
+				$decRes = $this->API->authId($meta['id']);
+				
+				if (!empty($decRes)) {
+					if ($decRes['status'] != '0') {
+						if(!$this->get('nik') || !$field = $this->get('field', TRUE)) {
+							$this->response(array('status' => 'bad request'), 400);
 						} else {
-							$selectCol = "";
-							$cols = explode('-', $field);
+							$data = $this->Penduduk->get_access_gov($this->get('nik'));
 
-							if(in_array('alamat_advanced', $cols)) {
-								array_push($cols, 'rt', 'rw', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi');
-							}
+							if(!$field = $this->get('field', TRUE)) {
+								$data = $this->Penduduk->get_access_public($nik);
+							} else {
+								$selectCol = "";
+								$cols = explode('-', $field);
 
-							foreach ($cols as $col) {
-								if (in_array($col, $this->baseCols)) {
-									$selectCol .= "base.".$col.","; 
-								} elseif (in_array($col, $this->baseUpdatableCols)) {
-									$selectCol .= "base_updatable.".$col.",";
-								} else {
-									continue;
+								if(in_array('alamat_advanced', $cols)) {
+									array_push($cols, 'rt', 'rw', 'kelurahan', 'kecamatan', 'kabupaten', 'provinsi');
 								}
-							}
 
-							$data = $this->Penduduk->get_costum(substr_replace($selectCol, '', -1), $this->get('nik'));
-						}
-						
-						if($data){
-							if (isset($data['foto'])) {
-								$data['foto'] = base64_encode($data['foto']);
-
-								if ($this->get('format') == 'html') {
-									$data['foto'] = '<img src="data:image/jpeg;base64,'.$data['foto'].'"/>';
+								foreach ($cols as $col) {
+									if (in_array($col, $this->baseCols)) {
+										$selectCol .= "base.".$col.","; 
+									} elseif (in_array($col, $this->baseUpdatableCols)) {
+										$selectCol .= "base_updatable.".$col.",";
+									} else {
+										continue;
+									}
 								}
+
+								$data = $this->Penduduk->get_costum(substr_replace($selectCol, '', -1), $this->get('nik'));
 							}
 							
-							$this->response($data, 200);
-						} else {
-							$this->response(NULL, 404);
+							if($data){
+								if (isset($data['foto'])) {
+									$data['foto'] = base64_encode($data['foto']);
+
+									if ($this->get('format') == 'html') {
+										$data['foto'] = '<img src="data:image/jpeg;base64,'.$data['foto'].'"/>';
+									}
+								}
+								
+								$this->response($data, 200);
+							} else {
+								$this->response(NULL, 404);
+							}
 						}
 					}
+				} else {
+					$this->response(array('status' => 'forbidden'), 403);
 				}
+			} else {
+				$this->response(array('status' => 'not authenticate'), 406);
 			}
 		}
 	}
