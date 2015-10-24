@@ -36,7 +36,19 @@
 										<div class="form-group">
 											<label class="col-sm-2 control-label" for="field-1">Email</label>
 											<div class="col-sm-10">
-												<input class="form-control" name="token" id="field-1" type="text" required>
+												<input class="form-control" name="email" id="field-1" type="text" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="field-1">Instansi</label>
+											<div class="col-sm-10">
+												<input class="form-control" name="instansi" id="field-1" type="text" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="field-1">Alamat Instansi</label>
+											<div class="col-sm-10">
+												<input class="form-control" name="alamat_instansi" id="field-1" type="text" required>
 											</div>
 										</div>
 										<div class="form-group">

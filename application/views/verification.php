@@ -29,7 +29,11 @@
                                     <table id="example-1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <?php form_open("Admin/verify"); ?>
                                         <thead>
-                                            
+                                            <tr>
+                                                <td>Nama Aplikasi</td>
+                                                <td>Email</td>
+                                                <td>Instansi</td>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             

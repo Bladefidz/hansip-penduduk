@@ -65,7 +65,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	public function verify()
+	public function verifikasi()
 	{
 		if ($this->input->method() == 'get') {
 			$data = $this->API->get_app_pending_req();
@@ -114,5 +114,6 @@ class Admin extends CI_Controller
 			} else {
 
 			}
+		}
 	}
 }
