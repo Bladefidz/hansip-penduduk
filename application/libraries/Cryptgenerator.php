@@ -5,9 +5,11 @@
 */
 class Cryptgenerator
 {
+	private alphabet;
+
 	public function __construct()
 	{
-		
+		$this->alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 	}
 
 	public static function encrypt($strToEnc)
@@ -24,5 +26,19 @@ class Cryptgenerator
 		}
 
 		return $encRes;
+	}
+
+	public static function encryptDummy($strToEnc)
+	{
+		if (len(strToEnc)%2 == 0) {
+			for($i=0; $i<=len($this->alphabet), $i+=2) {
+				$pair = substr($strToEnc, $i, $i+1);
+				if ($strToEnc[]) {
+
+				}
+			}
+		} else {
+
+		}
 	}
 }

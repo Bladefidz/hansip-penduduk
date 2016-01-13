@@ -11,12 +11,16 @@
 */
 class Admin extends CI_Controller
 {
+	/**
+	 * Construct Admin
+	 */
 	public function __construct()
 	{
 		parent::__construct();
 
 		$this->load->model('Penduduk');
 		$this->load->model('API');
+		$this->load->model('Locations');
 
 		$this->load->helper('url');
 		
@@ -25,6 +29,24 @@ class Admin extends CI_Controller
 		$this->load->library('encryption');
 	}
 
+	/**
+	 * [encryptor description]
+	 * @return [type] [description]
+	 */
+	private function encryptor()
+	{
+		$enc = "";
+		return $enc;
+	}
+
+	/**
+	 * Create Token
+	 * @param  [type] $id      [description]
+	 * @param  [type] $appName [description]
+	 * @param  [type] $email   [description]
+	 * @param  [type] $region  [description]
+	 * @return [type]          [description]
+	 */
 	private function token_create($id, $appName, $email, $region)
 	{
 		$this->load->library('Cryptgenerator');
@@ -32,20 +54,35 @@ class Admin extends CI_Controller
 
 		$raw = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
 		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
-		$encModeTwo = $this->encryption->encrypt($encModeOne);
+		// $encModeTwo = $this->encryption->encrypt($encModeOne);
 		
-		return urlencode($encModeTwo);
+		// return urlencode($encModeTwo);
+		return urlencode($encModeOne);
+	}
+
+	public function test_token()
+	{
+		echo $this->token_create('1', 'test', 'test@mail.com', 'jawa timur');
 	}
 	
+	/**
+	 * [index description]
+	 * @return [type] [description]
+	 */
 	public function index()
 	{
-		$this->load->view("register");
+		$this->register();
 	}
 	
+	/**
+	 * [register description]
+	 * @return [type] [description]
+	 */
 	public function register()
 	{
 		if ($this->input->method() == 'get') {
-			$this->load->view('register');
+			$data['prov'] = $this->Locations->get_prov_list();
+			$this->load->view('register', $data);
 		} elseif ($this->input->method() == 'post') {
 			$newAppIdentity = array(
 				'app_name' => $this->input->post('app_name', TRUE),
@@ -55,7 +92,7 @@ class Admin extends CI_Controller
 				'region' => strtoupper(str_replace(' ', '_', $this->input->post('region', TRUE))),
 				'level' => 0,
 				'status' => 0,
-				'date_created' => 'NOW()'
+				'date_created' => 'CURRENT_DATE()'
 			);
 
 			$this->API->register($newAppIdentity);
@@ -63,6 +100,10 @@ class Admin extends CI_Controller
 		}
 	}
 
+	/**
+	 * [verifikasi description]
+	 * @return [type] [description]
+	 */
 	public function verifikasi()
 	{
 		if ($this->input->method() == 'get') {
@@ -100,6 +141,21 @@ class Admin extends CI_Controller
 			} else {
 				echo "<script>alert('Gagal melakukan validasi!')</script>";
 			}
+		}
+	}
+
+	/**
+	 * [log description]
+	 * @return [type] [description]
+	 */
+	public function log()
+	{
+		if ($this->input->method() == 'get') {
+			$data['logs'] = $this->API->get_log();
+
+			$this->load->view('header');
+			$this->load->view('log_data', $data);
+			$this->load->view('footer');
 		}
 	}
 }

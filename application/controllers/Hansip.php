@@ -66,9 +66,25 @@ class Hansip extends REST_Controller
 	 * [tokenChecker description]
 	 * @return [type] [description]
 	 */
-	private function tokenChecker()
+	private function tokenChecker($token)
 	{
+		$metaToken = $this->tokenDecript($token);
 
+		if (!empty($metaToken)) {
+			$infoToken = explode('&', $metaToken);
+
+			$meta = array(
+				'app_name' => $infoToken[0],
+				'id' => $infoToken[1],
+				'region' => $infoToken[2]
+			);
+
+			$decRes = $this->API->authId($meta['id']);
+			
+			if (!empty($decRes)) {
+				return $decRes;
+			}
+		}
 	}
 
 	/**
@@ -128,6 +144,14 @@ class Hansip extends REST_Controller
 								}
 
 								$data = $this->Penduduk->get_costum(substr_replace($selectCol, '', -1), $this->get('nik'));
+								
+								$log = array(
+									'id_app' => $meta['id'],
+									'date' => date('Y-m-d G:i:s'),
+									'field' => $selectCol,
+									'method' => 'GET'
+								);
+								$this->API->logging($log);
 							}
 							
 							if($data){
@@ -172,6 +196,14 @@ class Hansip extends REST_Controller
 			}
 
 			if ($this->Penduduk->insert($base)) {
+				$log = array(
+					'id_app' => $meta['id'],
+					'date' => date('Y-m-d G:i:s'),
+					'field' => $base,
+					'method' => 'POST'
+				);
+				$this->API->logging($log);
+
 				$this->response(array('status' => 'success'));
 			} else {
 				$this->response(array('status' => 'failed'));
@@ -195,44 +227,70 @@ class Hansip extends REST_Controller
 
 	public function update_get()
 	{
-		$token = $this->get('token', TRUE);
+		$tokenRes = $this->tokenChecker($this->get('token', TRUE));
+		if (!empty($tokenRes)) {
+			if ($tokenRes['status'] == '1' && $tokenRes['level'] == '3') {
+				$baseUpdatable = array();
 
-		$baseUpdatable = array();
+				if ($this->get('nik')) {
+					$baseUpdatable['nik'] = $this->get('nik');
 
-		if ($this->get('nik')) {
-			$baseUpdatable['nik'] = $this->get('nik');
+					foreach ($this->baseUpdatableCols as $key) {
+						if (isset($_GET[$key])) {
+							$baseUpdatable[$key] = $this->get($key);
+						}
+					}
 
-			foreach ($this->baseUpdatableCols as $key) {
-				if (isset($_GET[$key])) {
-					$baseUpdatable[$key] = $this->get($key);
+					if ($this->Penduduk->update($baseUpdatable)) {
+						$log = array(
+							'id_app' => $meta['id'],
+							'date' => date('Y-m-d G:i:s'),
+							'field' => $baseUpdatable,
+							'method' => 'POST'
+						);
+						$this->API->logging($log);
+
+						$this->response(array('status' => 'success'), 200);
+					} else {
+						$this->response(array('status' => 'failed'), 400);
+					}
 				}
-			}
-
-			if ($this->Penduduk->update($baseUpdatable)) {
-				$this->response(array('status' => 'success'), 200);
-				echo "sukses";
 			} else {
-				$this->response(array('status' => 'failed'), 400);
-				echo "gagal";
+				$this->response(array('status' => 'success'), 303);
 			}
+		} else {
+			$this->response(array('status' => 'success'), 404);
 		}
 	}
 
 	public function insert_post()
 	{
 		$token = $this->get('token', TRUE);
-		$base = array();
+		$tokenRes = $this->tokenChecker($this->get('token', TRUE));
+		if (!empty($tokenRes)) {
+			if ($tokenRes['status'] == '1' && $tokenRes['level'] == '3') {
+				$base = array();
 
-		foreach ($this->baseCols as $key) {
-			if (isset($_POST[$key])) {
-				$base[$key] = $this->post($key);
+				foreach ($this->baseCols as $key) {
+					if (isset($_POST[$key])) {
+						$base[$key] = $this->post($key);
+					}
+				}
+
+				if ($this->Penduduk->insert($base)) {
+					$log = array(
+							'id_app' => $meta['id'],
+							'date' => date('Y-m-d G:i:s'),
+							'field' => $base,
+							'method' => 'POST'
+						);
+					$this->API->logging($log);
+
+					$this->response(array('status' => 'success'), 200);
+				} else {
+					$this->response(array('status' => 'failed'), 400);
+				}
 			}
-		}
-
-		if ($this->Penduduk->insert($base)) {
-			$this->response(array('status' => 'success'), 200);
-		} else {
-			$this->response(array('status' => 'failed'), 400);
 		}
 	}
 }

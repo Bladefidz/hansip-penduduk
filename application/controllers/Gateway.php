@@ -14,13 +14,13 @@ class Gateway extends REST_Controller
 
 		$id = 128;
 		$physical = $this->get_physical_info();
-		$appName = "SIM Manajemen Karya";
-        $email = "gamerhacking@gmail.com";
+		$appName = "Statistik_Pajak_Negara";
+        $email = "hafidzjazuli@gmail.com";
         $region = "JAKARTA";
 		$mac = str_replace('-', '', $physical[1]);
 
-		$raw = $appName.'&'.$id.'&'.$email.'&'.$region;
-		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$email.'&'.$region;
+		$raw = $appName.'&'.$id.'&'.$region;
+		$encModeOne = $appName.'&'.Cryptgenerator::encrypt($id).'&'.$region;
 		$encModeTwo = $this->encryption->encrypt($encModeOne);
 		
 		// $key = bin2hex($this->encryption->create_key(7));

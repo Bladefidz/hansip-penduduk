@@ -5,12 +5,8 @@
 		<!-- Adding class "toggle-others" will keep only one menu item open at a time. -->
 		<!-- Adding class "collapsed" collapse sidebar root elements and show only icons. -->
 		
-		
 		<div class="main-content">
-					
-			
-			<div class="page-title">
-				
+			<div class="page-title">	
 				<div class="title-env">
 					<h1 class="title">Register</h1>
 					<p class="description">Pendaftaran Aplikasi Pihak ke-3</p>
@@ -36,7 +32,7 @@
 										<div class="form-group">
 											<label class="col-sm-2 control-label" for="email">Email</label>
 											<div class="col-sm-10">
-												<input class="form-control" name="email" id="email" type="text" required>
+												<input class="form-control" name="email" id="email" type="email" required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -54,7 +50,11 @@
 										<div class="form-group">
 											<label class="col-sm-2 control-label" for="alamat">Provinsi</label>
 											<div class="col-sm-10">
-												<input class="form-control" name="region" id="region" type="text" required>
+												<select class="form-control" name="region" id="region" required>
+												<?php foreach ($prov as $p): ?>												}?>
+													<option name="<?php echo $p['id'] ?>"><?php echo $p['name'] ?></option>
+												<?php endforeach; ?>
+												</select>
 											</div>
 										</div>
 										<div class="form-group">

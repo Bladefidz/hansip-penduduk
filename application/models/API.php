@@ -27,7 +27,7 @@ class API extends CI_Model
      */
     public function authId($id)
     {
-        $this->db->select('status');
+        $this->db->select('status', 'level');
         $this->db->from('api_gateway');
         $this->db->where('id', $id);
         $query = $this->db->get();
@@ -57,5 +57,26 @@ class API extends CI_Model
         $this->db->set('level', $level);
         $this->db->where('id', $id);
         $this->db->update('api_gateway');
+    }
+
+    /**
+     * [logging description]
+     * @return [type] [description]
+     */
+    public function logging($metaLog)
+    {
+        $this->db->insert('api_log', $metaLog);
+    }
+
+    /**
+     * [get_log description]
+     * @return [type] [description]
+     */
+    public function get_log()
+    {
+        $this->db->from('api_log');
+        $this->db->join('api_gateway', 'api_log.id_app = api_gateway.id', 'left');
+        $query = $this->db->get();
+        return $query->result_array();
     }
 }
