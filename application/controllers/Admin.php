@@ -1,13 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* Hansip Class
+* Admin Class
 *
-* Main controller to controll access flow
-* Untuk get, punya rule url:
-* 	[get html format: http://localhost/penduduk/hansip/data/nik/676/format/html]
-*  	[get json format: http://localhost/penduduk/hansip/data/nik/676/format/json]
-*  	[get xml format: http://localhost/penduduk/hansip/data/nik/676/format/xml]
+* Administrator Controller
 */
 class Admin extends CI_Controller
 {
@@ -71,33 +67,7 @@ class Admin extends CI_Controller
 	 */
 	public function index()
 	{
-		$this->register();
-	}
-	
-	/**
-	 * [register description]
-	 * @return [type] [description]
-	 */
-	public function register()
-	{
-		if ($this->input->method() == 'get') {
-			$data['prov'] = $this->Locations->get_prov_list();
-			$this->load->view('register', $data);
-		} elseif ($this->input->method() == 'post') {
-			$newAppIdentity = array(
-				'app_name' => $this->input->post('app_name', TRUE),
-				'email' => $this->input->post('email', TRUE),
-				'instansi' => $this->input->post('instansi', TRUE),
-				'alamat_instansi' => $this->input->post('alamat_instansi', TRUE),
-				'region' => strtoupper(str_replace(' ', '_', $this->input->post('region', TRUE))),
-				'level' => 0,
-				'status' => 0,
-				'date_created' => 'CURRENT_DATE()'
-			);
-
-			$this->API->register($newAppIdentity);
-			redirect('Admin/register');
-		}
+		$this->verifikasi();
 	}
 
 	/**
@@ -109,9 +79,9 @@ class Admin extends CI_Controller
 		if ($this->input->method() == 'get') {
 			$data['app'] = $this->API->get_app_pending_req();
 
-			$this->load->view('header');
+			$this->load->view('layout/header');
 			$this->load->view('verification', $data);
-			$this->load->view('footer');
+			$this->load->view('layout/footer');
 		} elseif ($this->input->method() == 'post') {
 			$appName = $this->input->post('app_name');
 			$email = $this->input->post('email');
@@ -153,9 +123,9 @@ class Admin extends CI_Controller
 		if ($this->input->method() == 'get') {
 			$data['logs'] = $this->API->get_log();
 
-			$this->load->view('header');
+			$this->load->view('layout/header');
 			$this->load->view('log_data', $data);
-			$this->load->view('footer');
+			$this->load->view('layout/footer');
 		}
 	}
 }

@@ -1,4 +1,7 @@
 <div class="page-container">
+    <!-- Sidebar -->
+    <?php include_once('layout/sidebar.php'); ?>
+
     <div class="main-content">
         <div class="page-title">
             <div class="title-env">

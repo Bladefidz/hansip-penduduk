@@ -19,10 +19,15 @@
 	<link rel="stylesheet" href="<?= base_url();?>assets/css/xenon-components.css">
 	<link rel="stylesheet" href="<?= base_url();?>assets/css/xenon-skins.css">
 	<link rel="stylesheet" href="<?= base_url();?>assets/css/custom.css">
-	<link rel="stylesheet" href="<?= base_url();?>assets/css/jasny/jasny-bootstrap.min.css" />
-	
-	<script src="<?= base_url();?>assets/js/jquery-1.11.1.min.js"></script>
 
+	<link rel="stylesheet" href="<?= base_url();?>assets/js/datatables/dataTables.bootstrap.css">
+	<link rel="stylesheet" href="<?= base_url();?>assets/js/daterangepicker/daterangepicker-bs3.css">
+	<link rel="stylesheet" href="<?= base_url();?>assets/js/select2/select2.css">
+	<link rel="stylesheet" href="<?= base_url();?>assets/js/select2/select2-bootstrap.css">
+	<link rel="stylesheet" href="<?= base_url();?>assets/js/multiselect/css/multi-select.css">
+
+	<script src="<?= base_url();?>assets/js/jquery-1.11.1.min.js"></script>
+	
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
