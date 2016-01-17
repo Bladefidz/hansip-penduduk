@@ -36,5 +36,3 @@
 	
 	
 </head>
-<body class="page-body">
-

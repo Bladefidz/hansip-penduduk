@@ -1,3 +1,8 @@
+<?php
+	$active = '';
+	$active = "active opened active expanded";
+?>
+
 <div class="sidebar-menu toggle-others fixed">
 	<div class="sidebar-menu-inner ps-container ps-active-y">	
 		<header class="logo-env">
@@ -20,52 +25,52 @@
 			<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 			<li>
-				<a href="#">
-					<i class="linecons-cog"></i>
+				<a href="<?= base_url()."admin" ?>">
+					<i class="fa-home"></i>
 					<span class="title">Dashboard</span>
 				</a>
 			</li>
 			<li class="has-sub">
 				<a href="#">
-					<i class="linecons-cog"></i>
+					<i class="fa-database"></i>
 					<span class="title">Data Management</span>
 				</a>
 				<ul>
 					<li>
-						<a href="dashboard-1.html">
-							<span class="title">Input</span>
+						<a href="<?= base_url()."admin/civil_input" ?>">
+							<span class="title">Input Penduduk</span>
 						</a>
 					</li>
 					<li>
-						<a href="dashboard-1.html">
-							<span class="title">Data</span>
+						<a href="<?= base_url()."admin/civil_data" ?>">
+							<span class="title">Data Penduduk</span>
 						</a>
 					</li>
 					<li>
-						<a href="dashboard-1.html">
-							<span class="title">Statistik</span>
+						<a href="<?= base_url()."admin/civil_statistic" ?>">
+							<span class="title">Statistik penduduk</span>
 						</a>
 					</li>
 					<li>
-						<a href="dashboard-1.html">
-							<span class="title">Arsip</span>
+						<a href="<?= base_url()."admin/civil_archive" ?>">
+							<span class="title">Arsip Penduduk</span>
 						</a>
 					</li>
 				</ul>
 			</li>
 			<li class="has-sub">
 				<a href="#">
-					<i class="linecons-cog"></i>
+					<i class="fa-users"></i>
 					<span class="title">User Management</span>
 				</a>
 				<ul>
 					<li>
-						<a href="dashboard-1.html">
+						<a href="<?= base_url()."admin/user_data" ?>">
 							<span class="title">User Data</span>
 						</a>
 					</li>
 					<li>
-						<a href="dashboard-1.html">
+						<a href="<?= base_url()."admin/user_activity" ?>">
 							<span class="title">User Activity</span>
 						</a>
 					</li>
@@ -73,7 +78,7 @@
 			</li>
 			<li class="has-sub">
 				<a href="#">
-					<i class="linecons-cog"></i>
+					<i class="fa-cubes"></i>
 					<span class="title">API Management</span>
 				</a>
 				<ul>
@@ -83,7 +88,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="dashboard-1.html">
+						<a href="<?= base_url()."admin/access_control" ?>">
 							<span class="title">Access Control</span>
 						</a>
 					</li>
@@ -96,7 +101,7 @@
 			</li>
 			<li>
 				<a href="#">
-					<i class="linecons-cog"></i>
+					<i class="fa-wrench"></i>
 					<span class="title">Pengaturan</span>
 				</a>
 			</li>

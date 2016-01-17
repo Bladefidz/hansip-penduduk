@@ -8,9 +8,10 @@
 	<script src="<?= base_url();?>assets/js/xenon-widgets.js"></script>
 	<script src="<?= base_url();?>assets/js/jquery-validate/jquery.validate.min.js"></script>
 	<script src="<?= base_url();?>assets/js/toastr/toastr.min.js"></script>
+
+	<!-- Chart -->
 	<script src="<?= base_url();?>assets/js/devexpress-web-14.1/js/globalize.min.js"></script>
 	<script src="<?= base_url();?>assets/js/devexpress-web-14.1/js/dx.chartjs.js"></script>
-	<script src="<?= base_url();?>assets/js/toastr/toastr.min.js"></script>
 
 	<!-- Datepicker and timepicker -->
 	<script src="<?= base_url();?>assets/js/daterangepicker/daterangepicker.js"></script>
