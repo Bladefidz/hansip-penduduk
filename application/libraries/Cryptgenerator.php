@@ -1,15 +1,19 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
-* 
+* Cryptgenerator class
+*
+* Class to do encryption.
 */
 class Cryptgenerator
 {
-	private alphabet;
+	private $alphabet;
+	private $minEncLen;
 
 	public function __construct()
 	{
-		$this->alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+		$this->alphabet = ['f', 'h', 'z', 'y', 'n', 'g', 't', 'w', 'p', 'u', 'v', 'o', 'l', 'c', 'i', 's', 'k', 'e', 'x', 'b', 'm', 'j', 'd', 'a', 'q', 'r'];
+		$this->minEncLen = 16;
 	}
 
 	public static function encrypt($strToEnc)
@@ -28,17 +32,55 @@ class Cryptgenerator
 		return $encRes;
 	}
 
-	public static function encryptDummy($strToEnc)
+	public function alphaEncrypt($intToEnc)
 	{
-		if (len(strToEnc)%2 == 0) {
-			for($i=0; $i<=len($this->alphabet), $i+=2) {
-				$pair = substr($strToEnc, $i, $i+1);
-				if ($strToEnc[]) {
+		$res = '';
 
-				}
+		$strToEnc = (string)$intToEnc;
+		$len = strlen($strToEnc);
+
+		if (($len%2) == 0) {
+			$key = 1;
+
+			for($i=0; $i<=$len; $i+=2) {
+				$pair = $strToEnc[$i].$strToEnc[$i+1];
+				$res .= $this->pairEnc($pair, $key);
 			}
 		} else {
+			$key = 3;
+			$strToEnc = (string)$intToEnc;
 
+			$single = $strToEnc[$len-1];
+			$res .= $this->pairEnc($single, $key);
+
+			if ($len > 1) {
+				$strToEnc = substr($strToEnc, 0, -1);
+				for($i=0; $i<($len-1); $i+=2) {
+					$pair = $strToEnc[$i].$strToEnc[$i+1];
+					$res .= $this->pairEnc($pair, $key);
+				}
+			}
+		}
+
+		if (strlen($res) <= $this->minEncLen) {
+			$left = $this->minEncLen-strlen($res);
+			$fill = array_slice($this->alphabet, $strToEnc[0], $left);
+			foreach ($fill as $f) {
+				$res .= $f;
+			}
+		}
+
+		return $res;
+	}
+
+	private function pairEnc($pairInt, $key)
+	{
+		if ($pairInt <= 26) {
+			return $this->alphabet[$pairInt] . $key*1;
+		} elseif ($pairInt > 26 && $pairInt <= 53) {
+			return $this->alphabet[$pairInt] . $key*2;
+		} elseif ($pairInt > 53 && $pairInt <= 99) {
+			return $this->alphabet[$pairInt] . $key*3;
 		}
 	}
 }

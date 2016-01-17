@@ -26,6 +26,17 @@ class Admin extends CI_Controller
 	}
 
 	/**
+	 * [render description]
+	 * @return [type] [description]
+	 */
+	private function render($page, $data=null)
+	{
+		$this->load->view('layout/header');
+		$this->load->view($page, $data);
+		$this->load->view('layout/footer');
+	}
+
+	/**
 	 * [encryptor description]
 	 * @return [type] [description]
 	 */
@@ -56,6 +67,10 @@ class Admin extends CI_Controller
 		return urlencode($encModeOne);
 	}
 
+	/**
+	 * [test_token description]
+	 * @return [type] [description]
+	 */
 	public function test_token()
 	{
 		echo $this->token_create('1', 'test', 'test@mail.com', 'jawa timur');
@@ -67,8 +82,106 @@ class Admin extends CI_Controller
 	 */
 	public function index()
 	{
-		$this->verifikasi();
+		$this->dashboard();
 	}
+
+	/**
+	 * [login description]
+	 * @return [type] [description]
+	 */
+	public function login()
+	{
+		$this->render('login');
+	}
+
+	/**
+	 * [register description]
+	 * @return [type] [description]
+	 */
+	public function register()
+	{
+
+	}
+
+	/**
+	 * [dashboard description]
+	 * @return [type] [description]
+	 */
+	public function dashboard()
+	{
+		$this->render('dashboard');
+	}
+
+
+	/* Data Management */
+
+	/**
+	 * [civil_input description]
+	 * @return [type] [description]
+	 */
+	public function civil_input()
+	{
+		$data['simpleLogs'] = $this->API->get_log();
+
+		$this->render('civil_input', $data);
+	}
+
+	/**
+	 * [civil_data description]
+	 * @return [type] [description]
+	 */
+	public function civil_data()
+	{
+		$data['pdd'] = array();
+		
+		$this->render('data_management/civil_data', $data);
+	}
+
+	/**
+	 * [civil_statistic description]
+	 * @return [type] [description]
+	 */
+	public function civil_statistic()
+	{
+
+	}
+
+	/**
+	 * [civil_archive description]
+	 * @return [type] [description]
+	 */
+	public function civil_archive()
+	{
+
+	}
+
+
+	/* User Management */
+
+	/**
+	 * [user_data description]
+	 * @return [type] [description]
+	 */
+	public function user_data()
+	{
+		$data['users'] = array();
+		
+		$this->render('user_management/user_data', $data);
+	}
+
+	/**
+	 * [user_activity description]
+	 * @return [type] [description]
+	 */
+	public function user_activity()
+	{
+		$data['activity'] = array();
+		
+		$this->render('user_management/user_activity', $data);
+	}
+
+
+	/* API Management */
 
 	/**
 	 * [verifikasi description]
@@ -79,9 +192,7 @@ class Admin extends CI_Controller
 		if ($this->input->method() == 'get') {
 			$data['app'] = $this->API->get_app_pending_req();
 
-			$this->load->view('layout/header');
-			$this->load->view('verification', $data);
-			$this->load->view('layout/footer');
+			$this->render('api_management/verification', $data);
 		} elseif ($this->input->method() == 'post') {
 			$appName = $this->input->post('app_name');
 			$email = $this->input->post('email');
@@ -115,6 +226,17 @@ class Admin extends CI_Controller
 	}
 
 	/**
+	 * [access_control description]
+	 * @return [type] [description]
+	 */
+	public function access_control()
+	{
+		$data['simpleLogs'] = $this->API->get_log();
+
+		$this->render('api_management/access_control', $data);
+	}
+
+	/**
 	 * [log description]
 	 * @return [type] [description]
 	 */
@@ -123,9 +245,19 @@ class Admin extends CI_Controller
 		if ($this->input->method() == 'get') {
 			$data['logs'] = $this->API->get_log();
 
-			$this->load->view('layout/header');
-			$this->load->view('log_data', $data);
-			$this->load->view('layout/footer');
+			$this->render('api_management/log_data', $data);
 		}
+	}
+
+
+	/* Configuration */
+
+	/**
+	 * [config description]
+	 * @return [type] [description]
+	 */
+	public function config()
+	{
+		$this->render('configuration/config', $data);
 	}
 }
